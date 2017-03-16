@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:c="http://www.springframework.org/schema/c"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+		http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd 
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context-4.2.xsd">
+		
+	<context:component-scan base-package="com.ian.springmvc.controller, com.ian.springmvc.modelattribute, com.ian.springmvc.converter" />
+	
+	<!-- 使用默认的Servlet来响应静态文件 -->
+	<mvc:default-servlet-handler/>
+	
+	<mvc:annotation-driven/>
+	
+	<!-- 设置配置方案, 此句会自动加载  RequestMappingHandlerMapping和RequestMappingHandlerAdapter， 并提供@NumberFomatannotation @DateTimeFormat, @Valid支持
+	支持xml,json读写 所以不需要下面注释的两句话了-->
+	<!-- <mvc:annotation-driven conversion-service="conversionService">
+		如果使用默认的jackson 来解析json，则不用配置下面的bean
+		<mvc:message-converters register-defaults="false">
+			<bean class="org.springframework.http.converter.StringHttpMessageConverter"/>
+			<bean class="org.springframework.http.converter.xml.XmlAwareFormHttpMessageConverter"/>
+			<bean class="org.springframework.http.converter.ByteArrayHttpMessageConverter"/>
+			<bean class="org.springframework.http.converter.BufferedImageHttpMessageConverter"/>
+			
+			<bean id="fastJsonHttpMessageConverter" class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">
+				<property name="supportedMediaTypes">
+					<list>
+						<value>text/html;charset=UTF-8</value>
+						<value>application/json;charset=UTF-8</value>
+					</list>
+				</property>
+			</bean>
+		</mvc:message-converters>	
+	</mvc:annotation-driven> -->
+	
+	<!-- <bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
+		<property name="converters">
+			<list>
+				<bean class="com.ian.springmvc.converter.StringToDateConverter" p:datePattern="yyyy-MM-dd"></bean>
+			</list>
+		</property>
+	</bean> -->
+	
+	<bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+		<property name="formatters">
+			<list>
+				<!-- 使用自定义的formatter -->
+				<!-- <bean class="com.ian.springmvc.formatter.DateFormatter" c:_0="yyyy-MM-dd"/> -->
+				<!-- 使用系统提供的formatter -->
+				<bean class="org.springframework.format.datetime.DateFormatter" p:pattern="yyyy-MM-dd"/>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping" />
+	
+	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter" />	 -->
+	
+	<!-- 视图解析器 -->	
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix">
+			<value>/WEB-INF/content/</value>
+		</property>
+		<property name="suffix">
+			<value>.jsp</value>
+		</property>
+	</bean>
+		
+</beans>
