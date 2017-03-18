@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ian.mybatis.mapper.UserMapper2">
+	
+	<cache eviction='LRU' flushInterval="60000" size="512" readOnly="true"/>
+
+	<!-- <insert id="save" parameterType="user" useGeneratedKeys="true">
+		INSERT INTO TB_USER(name, sex, age) VALUES(#{name}, #{sex}, #{age})
+	</insert> -->
+	
+	<select id="selectUserById" parameterType="int" resultType="user">
+		select * from tb_user where id = #{id}
+	</select>
+	
+	<select id="selectAll" resultType="user">
+		select * from tb_user
+	</select>
+	
+	<!-- <update id="modifyUser" parameterType="user">
+		update tb_user set name = #{name}, sex = #{sex}, age = #{age}
+		where id = #{id}
+	</update> -->
+	
+	<delete id="deleteUserById" parameterType="int">
+		delete from tb_user where id = #{id}
+	</delete>
+</mapper>
