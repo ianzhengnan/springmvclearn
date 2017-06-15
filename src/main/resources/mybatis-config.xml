@@ -5,6 +5,8 @@
 <configuration>
 	<settings>
 		<setting name="logImpl" value="LOG4J"/>
+		<!-- 开启二级缓存 -->
+		<setting name="cacheEnabled" value="true"/>
 	</settings>
 	<typeAliases>
 		<typeAlias alias="user" type="com.ian.mybatis.test.User"/>
@@ -21,6 +23,8 @@
 		</environment>
 	</environments>
 	<mappers>
+		<mapper resource="com/ian/mybatis/mapper/UserMapper2.xml"/>
 		<mapper resource="com/ian/mybatis/mapper/UserMapper.xml"/>
+		<mapper resource="com/ian/mybatis/mapper/EmployeeMapper.xml"/>
 	</mappers>
 </configuration>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ian.mybatis.mapper.EmployeeMapper">
+	<select id="selectEmployeeByIdLike" resultType="com.ian.mybatis.domain.Employee">
+		select * from tb_employee
+		<where>
+			<if test="state != null">
+				and state = #{state}
+			</if>
+			<if test="id != null">
+				and id = #{id}
+			</if>
+		</where>
+		<!-- <choose>
+			<when test="id != null">
+				and id = #{id}
+			</when>
+			<when test = "password != null and loginname != null">
+				and password = #{password}
+				and loginname = #{loginname}
+			</when>
+			<otherwise>
+				and sex = '男'
+			</otherwise>
+		</choose> -->
+	</select>
+	
+	<select id="selectEmployeeById" resultType="com.ian.mybatis.domain.Employee">
+		select * from tb_employee where id = #{id}
+	</select>
+	
+	<update id="updateEmployeeIfNecessary" parameterType="com.ian.mybatis.domain.Employee">
+		update tb_employee
+			<set>
+				<if test="loginname != null">loginname = #{loginname},</if> 
+				<if test="password != null">password = #{password},</if> 
+				<if test="name != null">name = #{name},</if> 
+				<if test="sex != null">sex = #{sex},</if> 
+				<if test="age != null">age = #{age},</if> 
+				<if test="phone != null">phone = #{phone},</if> 
+				<if test="sal != null">sal = #{sal},</if> 
+				<if test="state != null">state = #{state}</if> 
+			</set>
+		where id = #{id}
+	</update>
+	<select id="selectEmployeeIn" resultType="com.ian.mybatis.domain.Employee">
+		select * 
+		  from tb_employee
+		 where id in 
+		 <foreach item="item" index="index" collection="list" 
+		 	open="(" separator="," close=")">
+		 	#{item}
+		 </foreach>
+	</select>
+	<select id="selectEmployeeLikeName" resultType="com.ian.mybatis.domain.Employee">
+		<bind name="pattern" value="'%' + _parameter.getName() + '%'" />
+		select * from tb_employee
+		where loginname like #{pattern}
+	</select>
+</mapper>
